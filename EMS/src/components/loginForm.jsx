@@ -1,12 +1,49 @@
 import { HiMiniBuildingStorefront } from "react-icons/hi2";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { loginUser, setLoggedInUser } from "../utils/localStorage";
 export default function LoginForm() {
     const [passwordVisible,setPasswordVisible] = useState(false)
+    const [email,setEmail] = useState('');
+    const [data,setData] = useState([]);
+    const [password,setPassword] = useState('');
     function togglePassword(event){
         setPasswordVisible(!passwordVisible);
+    }
+     const navigate = useNavigate();
+    useEffect(()=>{
+      setData(JSON.parse(localStorage.getItem("registeredUsers")))
+    },[])
+
+    function submitHandler(e){
+      e.preventDefault();
+      console.log(email,password)
+      const userData = loginUser(email,password);
+      if(email == 'admin@admin.com' && password == "admin"){
+        const tempData = {
+          id:Date.now(),
+          username:"Admin",
+          firstName:"Admin",
+          role:"admin"
+        }
+        localStorage.setItem("loggedInUser",JSON.stringify(tempData))
+        toast.success("Login Successfully");
+        navigate(`/dashboard/${tempData.role}`)
+      }
+      else if(userData){
+        toast.success("Loggin Successfully")
+        setLoggedInUser(userData);
+        navigate(`/dashboard/${userData?.role}`)
+      }
+      else{
+        toast.error("Email or password does not match.")
+      }
+      setEmail('');
+      setPassword('');
+
     }
     const Icon = passwordVisible ? FaEye : FaEyeSlash;
   return (
@@ -30,7 +67,7 @@ export default function LoginForm() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={submitHandler} method="POST" className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-[#333a56]">
                 Email address
@@ -40,9 +77,11 @@ export default function LoginForm() {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
                   required
                 //   autoComplete="email"
                   className="block w-full bg-[#f7f5e6] rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(e)=>setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -64,8 +103,11 @@ export default function LoginForm() {
                   name="Password"
                   type={`${passwordVisible? "text" :"password"}`}
                   required
+                  value={password}
                 //   autoComplete="email"
                   className="block w-full bg-[#f7f5e6] rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(e)=>setPassword(e.target.value)}
+
                 />
                 <Icon className="absolute right-3 text-[#333a56] top-1/2 -translate-y-1/2 cursor-pointer" onClick={togglePassword}/>
               </div>

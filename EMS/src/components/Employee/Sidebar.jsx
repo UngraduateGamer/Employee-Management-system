@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiMiniBuildingStorefront } from "react-icons/hi2";
 import { MdDashboard, MdOutlineKeyboardArrowDown, MdSpaceDashboard } from "react-icons/md";
-import { NavLink } from 'react-router';
+
 import { TbNotesOff } from "react-icons/tb";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { FaBullhorn } from "react-icons/fa6";
+import { NavLink, useNavigate } from 'react-router';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  useEffect(()=>{
+    const data = localStorage.getItem("LoggedInUser_"+Date.now());
+  },[])
+  function hello(){
+    navigate("/login")
+    console.log("Hello")
+  }
   function toggleLeave(){
     setIsLeaveVisible(!isLeaveVisible);
   }
@@ -39,57 +48,68 @@ const Sidebar = () => {
         </NavLink>
 
 
-        <NavLink to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
+        <div  className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
           <div className='w-full'>
         <div className='flex  relative items-center gap-3 hover:border-r-4 py-3 px-5  border-[#333a56] w-full hover:bg-[#52658F] hover:text-[#e8e8e8] ' onClick={toggleLeave}>
         <TbNotesOff className='text-xl '/> Leave Management
          {isLeaveVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5 ' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5 ' />}
         </div>
         <div className={`${isLeaveVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'>Leave History</p>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'>Apply for Leave</p>
+        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]' onClick={()=>navigate("/dashboard/employee/leave/history")}>Leave History</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+         onClick={()=>navigate("/dashboard/employee/leave/apply")}
+        >Apply for Leave</p>
         </div>
           </div>
-        </NavLink>
+        </div>
 
-        <NavLink to="" className={'flex  items-center gap-3    text-[#333a56]   font-semibold  ' }>
+        <div to="" className={'flex  items-center gap-3    text-[#333a56]   font-semibold  ' }>
           <div className='w-full'>
         <div className='flex relative items-center gap-3 hover:border-r-4 py-3 px-5  border-[#333a56] w-full hover:bg-[#52658F] hover:text-[#e8e8e8] ' onClick={togglePayroll}>
         <FaIndianRupeeSign className='text-xl '/> Payroll
          {isPayrollVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5' />}
         </div>
         <div className={`${isPayrollVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'>My Payslips</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+        onClick={()=>navigate("/dashboard/employee/payslips")}
+        >My Payslips</p>
         
         </div>
           </div>
-        </NavLink>
+        </div>
         
-        <NavLink to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
+        <div to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
           <div className='w-full'>
         <div className='flex items-center gap-3 hover:border-r-4 py-3 px-5  border-[#333a56] relative w-full hover:bg-[#52658F] hover:text-[#e8e8e8] ' onClick={toggleAttendance}>
         <MdOutlineAccessTime className='text-xl '/> Attendance
          {isAttendanceVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5' />}
         </div>
         <div className={`${isAttendanceVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'>My Attendance</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+        
+        onClick={()=>navigate("/dashboard/employee/attendance")}
+        
+        >My Attendance</p>
         
         </div>
           </div>
-        </NavLink>
+        </div>
 
-        <NavLink to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
+        <div to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
           <div className='w-full'>
         <div className='flex relative items-center gap-3 hover:border-r-4 py-3 px-5  border-[#333a56] w-full hover:bg-[#52658F] hover:text-[#e8e8e8] ' onClick={toggleAnnouncement}>
         <FaBullhorn className='text-xl '/> Announcements
          {isAnnouncementVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5' />}
         </div>
         <div className={`${isAnnouncementVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'>View Announcements</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+        onClick={()=>navigate("/dashboard/employee/announcements")}
+        
+        >View Announcements</p>
         
         </div>
           </div>
-        </NavLink>
+        </div>
         
         </div>
 

@@ -15,8 +15,8 @@ const Navbar = () => {
                 <li><NavLink className='hover:text-[#333a56]' to="/contact-us">Contact us</NavLink></li>
                 </div>
                 <div className='flex gap-8 items-center'>
-                    <button className='btn rounded-md bg-transparent text-[#333a56]  text-lg font-normal px-3 py-2 cursor-pointer' onClick={()=>navigate("/login")}>Login</button>
-                    <button className='btn rounded-md font-normal bg-[#333a56] text-[#ededed] text-lg px-3 py-2 cursor-pointer' onClick={()=>{navigate("/signup")}}>Sign up</button>
+                    <button className=' rounded-md bg-transparent text-[#333a56]  text-lg font-normal px-3 py-2 cursor-pointer' onClick={()=>navigate("/login")}>Login</button>
+                    <button className=' rounded-md font-normal bg-[#333a56] text-[#ededed] text-lg px-3 py-2 cursor-pointer' onClick={()=>{navigate("/signup")}}>Sign up</button>
                 </div>
             </ul>
         </nav>

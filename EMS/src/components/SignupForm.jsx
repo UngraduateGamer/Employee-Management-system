@@ -3,14 +3,69 @@ import { FaUserPlus } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { addUser, getDepartments } from "../utils/localStorage";
 
 export default function SignUpForm() {
     const navigate = useNavigate()
+    
     const [passwordVisible,setPasswordVisible] = useState(false);
     const [confirmPasswordVisible,setConfirmPasswordVisible] = useState(false);
     const Icon2 = confirmPasswordVisible ? FaEye : FaEyeSlash;
     const Icon1 = passwordVisible ? FaEye : FaEyeSlash;
+    const [username,setUsername] = useState('');
+    const [email,setEmail] = useState("");
+    const [firstName,setFirstName] = useState('');
+    const [lastName,setLastName] = useState('');
+    const [department,setDepartment] = useState('');
+    const [salary,setSalary] = useState(0);
+    const [birthday,setBirthday] = useState('');
+    const [experience,setExperience] = useState('');
+    const [password,setPassword]= useState('');
+    const [confirmPassword,setConfirmPassword]= useState('');
+    const [role,setRole] = useState('employee');
+    const [allDepartments,setAllDepartments] = useState([]);
+// fetch all departments data
+useEffect(()=>{
+  const data = getDepartments();
+  setAllDepartments(data);
+},[])
+
+    function submitHandler(event){
+      event.preventDefault();
+      if(password === confirmPassword){
+      const user = {
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        department,
+        salary,
+        birthday,
+        experience,
+        role
+      }
+      console.log(department)
+      addUser(user)
+      toast.success("Signup complete! Wait for admin approval (approx. 10hour)");
+      navigate("/")
+    }
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setDepartment('');
+      setSalary('');
+      setBirthday('');
+      setExperience('');
+      setEmail('')
+      setPassword('');
+      setConfirmPassword('');
+      setRole('');
+    }
+
     function togglePassword(event){
         setPasswordVisible(!passwordVisible);
     }
@@ -38,10 +93,22 @@ export default function SignUpForm() {
         </div>
 
         <div className="mt-10 mx-auto w-[80%] shadow-md p-10 rounded">
-          <form action="#" method="POST" className="space-y-6">
+          <form  method="POST" className="space-y-6" onSubmit={submitHandler}>
 
-            <div className="flex justify-between gap-5">
-            <div className="w-1/2">
+            <div className="flex justify-between gap-5 relative">
+            <div className="absolute w-full  h-20 ">
+               <label htmlFor="employee" className="block w-full text-sm/6 font-medium text-[#333a56] mb-1">
+                Select Role
+              </label>
+              <div className="flex bg-[#f7f5e6] divide-x-2 divide-[#333a56] text-[#333a56] font-semibold text-sm w-fit rounded border-2 cursor-pointer border-[#333a56]">
+              <div className={` ${role == 'employee' ? "bg-[#52658f] text-[#e8e8e8]"  : ""} p-3 cursor-pointer `} onClick={()=>{setRole('employee')}} >Employee</div> 
+              <div className={` ${role == 'tl' ? "bg-[#52658f] text-[#e8e8e8]"  : ""} p-3 cursor-pointer `} onClick={()=>{setRole('tl')}}>Team Leader </div> 
+              <div className={` ${role == 'senior' ? "bg-[#52658f] text-[#e8e8e8]"  : ""}  p-3 cursor-pointer `} onClick={()=>{setRole('senior')}}>Senior Developer</div> 
+              </div>
+
+             
+            </div>
+            <div className="w-1/2 pt-20">
               <label htmlFor="username" className="block text-sm/6 font-medium text-[#333a56]">
                 Username
               </label>
@@ -50,13 +117,15 @@ export default function SignUpForm() {
                   id="username"
                   name="username"
                   type="text"
+                  value={username}
                   required
                 //   autoComplete="email"
                   className="block w-full rounded-md  px-3   bg-[#f7f5e6]   py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setUsername(event.target.value)}}
                 />
               </div>
             </div>
-            <div className="w-1/2">
+            <div className="w-1/2 pt-20">
               <label htmlFor="email" className="block text-sm/6 font-medium text-[#333a56]">
                 Email address
               </label>
@@ -65,9 +134,11 @@ export default function SignUpForm() {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
                   required
                 //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setEmail(event.target.value)}}
                 />
               </div>
             </div>
@@ -84,8 +155,10 @@ export default function SignUpForm() {
                   name="firstName"
                   type="text"
                   required
+                  value={firstName}
                 //   autoComplete="email"
                   className="block w-full rounded-md    bg-[#f7f5e6]   px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setFirstName(event.target.value)}}
                 />
               </div>
             </div>
@@ -99,8 +172,10 @@ export default function SignUpForm() {
                   name="lastName"
                   type="text"
                   required
+                  value={lastName}
                 //   autoComplete="email"
                   className="block w-full    bg-[#f7f5e6]  rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setLastName(event.target.value)}}
                 />
               </div>
             </div>
@@ -116,16 +191,18 @@ export default function SignUpForm() {
                   id="department"
                   name="department"
                   required
+                  value={department}
+
+                  onChange={(event)=>setDepartment(event.target.value)}
                 //   autoComplete="email"
-                  className="block w-full rounded-md   bg-[#f7f5e6]    px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  className="block uppercase w-full rounded-md   bg-[#f7f5e6]    px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                 >
                 <option className="bg-[#f7f5e6]">Select Department (Optional)</option>
-                <option value={'finance'} className="bg-[#f7f5e6]">Finance</option>
-                <option value={'marketing'} className="bg-[#f7f5e6]">Marketing</option>
-                <option value={'hr'} className="bg-[#f7f5e6]">HR</option>
-                <option value={'it'} className="bg-[#f7f5e6]">IT</option>
-                <option value={'developers'} className="bg-[#f7f5e6]">Developers</option>
-                <option value={'security'} className="bg-[#f7f5e6]">Security</option>
+                {
+                  allDepartments.length < 1 ?  <option className="bg-[#f7f5e6]">---no departments found---</option> : allDepartments?.map((elem,idx)=>(
+                     <option className="bg-[#f7f5e6] uppercase" value={elem.data}>{elem.data}</option>
+                  ))
+                }
                 </select>
               </div>
             </div>
@@ -139,8 +216,10 @@ export default function SignUpForm() {
                   name="salary"
                   type="number"
                   required
-                //   autoComplete="email"
+                  value={salary}
+                  //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setSalary(event.target.value)}}
                 />
               </div>
             </div>
@@ -155,10 +234,12 @@ export default function SignUpForm() {
                 <input
                   id="birthday"
                   name="birthday"
+                  value={birthday}
                   type="date"
                   required
                 //   autoComplete="email"
                   className="block    bg-[#f7f5e6]  w-full rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setBirthday(event.target.value)}}
                 />
               </div>
             </div>
@@ -171,9 +252,11 @@ export default function SignUpForm() {
                   id="experience"
                   name="experience"
                   type="number"
+                  value={experience}
                   required
                 //   autoComplete="email"
                   className="block   bg-[#f7f5e6]   w-full rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setExperience(event.target.value)}}
                 />
               </div>
             </div>
@@ -188,10 +271,12 @@ export default function SignUpForm() {
                 <input
                   id="password"
                   name="password"
+                  value={password}
                   type={`${passwordVisible ? "text" : "password"}`}
                   required
                 //   autoComplete="email"
                   className="block w-full    bg-[#f7f5e6]  rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setPassword(event.target.value)}}
                 />
                 <Icon1 className="absolute right-3 text-[#333a56] top-1/2 -translate-y-1/2 cursor-pointer  " onClick={togglePassword} />
               </div>
@@ -204,10 +289,12 @@ export default function SignUpForm() {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
+                  value={confirmPassword}
                   type={`${confirmPasswordVisible? "text" :"password"}`}
                   required
                 //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
+                  onChange={(event)=>{setConfirmPassword(event.target.value)}}
                 />
                 <Icon2 className="absolute right-3 text-[#333a56] top-1/2 -translate-y-1/2 cursor-pointer" onClick={toggleConfirmPassword}/>
               </div>
