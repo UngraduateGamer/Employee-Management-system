@@ -1,11 +1,13 @@
+
 import { FaUserPlus } from "react-icons/fa";
 
 import { NavLink, useNavigate } from "react-router";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { createEmployee, getDepartments } from "../../utils/localStorage";
+import { use, useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
+import { addUser,getDepartments } from "../../utils/localStorage";
 
 export default function CreateEmployee() {
     const navigate = useNavigate()
@@ -26,45 +28,48 @@ export default function CreateEmployee() {
     const [confirmPassword,setConfirmPassword]= useState('');
     const [role,setRole] = useState('employee');
     const [allDepartments,setAllDepartments] = useState([]);
-    // fetch all departments data
-    useEffect(()=>{
-      const data = getDepartments();
-      setAllDepartments(data);
-    },[])
-     function submitHandler(event){
-          event.preventDefault();
-          if(email === 'admin@admin.com'){
-            toast.error("Wrong email ! this email is not a valid email")
-          }
-          else if(password === confirmPassword){
-          const user = {
-            username,
-            firstName,
-            lastName,
-            email,
-            password,
-            department,
-            salary,
-            birthday,
-            experience,
-            role
-          }
-          createEmployee(user)
-          toast.success("User Added...");
-          navigate("/dashboard/admin")
-        }
-          setUsername('');
-          setFirstName('');
-          setLastName('');
-          setDepartment('');
-          setSalary('');
-          setBirthday('');
-          setExperience('');
-          setEmail('')
-          setPassword('');
-          setConfirmPassword('');
-          setRole('');
-        }
+// fetch all departments data
+useEffect(()=>{
+  const data = getDepartments();
+  setAllDepartments(data);
+},[])
+
+    function submitHandler(event){
+      event.preventDefault();
+      if(email === 'admin@admin.com'){
+        toast.error("Wrong email ! this email is not a valid email")
+      }
+      else if(password === confirmPassword){
+      const user = {
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        department,
+        salary,
+        birthday,
+        experience,
+        role
+      }
+      console.log(department)
+      addUser(user)
+      toast.success("Signup complete! Wait for admin approval (approx. 10hour)");
+      navigate("/dashboard/seniors/employee")
+    }
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setDepartment('');
+      setSalary('');
+      setBirthday('');
+      setExperience('');
+      setEmail('')
+      setPassword('');
+      setConfirmPassword('');
+      setRole('');
+    }
+
     function togglePassword(event){
         setPasswordVisible(!passwordVisible);
     }
@@ -81,10 +86,18 @@ export default function CreateEmployee() {
         <body class="h-full">
         ```
       */}
-    <div className="flex px-6 lg:px-8  bg-[#e8e8e8] ">
-        <div className="my-10 mx-auto w-full shadow-md p-10 rounded  overflow-y-auto">
-      <h1 className="text-3xl font-bold text-[#333a56] mb-3 -mt-3">Create an Account</h1>
-          <form  method="POST" className="space-y-6 " onSubmit={submitHandler}>
+      <div className="flex min-h-full h-full flex-col justify-center px-6 py-30 lg:px-8 bg-[#e8e8e8] ">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="flex justify-center">
+          <FaUserPlus className="text-[#333a56] text-4xl text-center"/>
+            </div>
+          <h2 className=" text-center text-2xl/9 font-bold tracking-tight text-[#333a56]">Create your employee account</h2>
+            <p className="text-[#333a56] cursor-pointer text-center font-medium" onClick={()=>navigate("/login")}><span className="no-underline cursor-auto text-[#52658F]" onClick={(e)=>e.stopPropagation()}>Already have an account? </span> Sign in here</p>
+
+        </div>
+
+        <div className="mt-10 mx-auto w-[80%] shadow-md p-10 rounded">
+          <form  method="POST" className="space-y-6" onSubmit={submitHandler}>
 
             <div className="flex justify-between gap-5 relative">
             <div className="absolute w-full  h-20 ">

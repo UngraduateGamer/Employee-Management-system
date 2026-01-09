@@ -1,30 +1,42 @@
 import { FaUserPlus } from "react-icons/fa";
 
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate, useParams } from "react-router";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { addAnnouncement } from "../../utils/localStorage";
+import { useEffect, useEffectEvent, useState } from "react";
 import { toast } from "react-toastify";
-
-export default function CreateAnnouncement() {
-  const [user,setUser] = useState({});
+import { getAnnouncementByEmp,updateAnnouncement } from "../../utils/localStorage";
+export default function EditAnnouncementOnly() {
+  const {id} = useParams();
+  const [announcement,setAnnouncement]= useState({});
+   const [title,setTitle] = useState('');
+    const [content,setContent] = useState('');
   useEffect(()=>{
-    setUser(JSON.parse(localStorage.getItem("loggedInUser")));
-  },[])
-
-  function handleSubmit(event){
+    const announcementData = getAnnouncementByEmp(id);
+    setAnnouncement(announcementData)
+    setTitle(announcementData?.title);
+    setContent(announcementData?.content);
+  },[id])
+  
+useEffect(()=>{
+  console.log(title,content,announcement)
+},[title])
+  
+    function handleSubmit(event){
     event.preventDefault();
-    const announcementData = {title,content,role:"admin"};
-      addAnnouncement(announcementData);
-      setTitle('');
-      setContent('');
-      toast.success("Announcement Created Successfully")
-    }
+    const updated = {title,content}
+    updateAnnouncement(id,updated)
+    setTitle('')
+    setContent('')
+    navigate("/dashboard/admin/announcements")
+    toast.success("Announcement updated successfully")
+  }
+  function handleChange(e){
+    console.log(e.target.value)
+  }
     const navigate = useNavigate()
     const [passwordVisible,setPasswordVisible] = useState(false);
-    const [title,setTitle] = useState('');
-    const [content,setContent] = useState('');
+   
     const [confirmPasswordVisible,setConfirmPasswordVisible] = useState(false);
     const Icon2 = confirmPasswordVisible ? FaEye : FaEyeSlash;
     const Icon1 = passwordVisible ? FaEye : FaEyeSlash;
@@ -45,7 +57,7 @@ export default function CreateAnnouncement() {
         ```
       */}
       <div className="flex min-h-full h-full flex-col mt-20 px-6 pb-0 lg:px-8 bg-[#333a56] ">
-                    <h2 className='text-3xl capitalize font-bold text-[#e8e8e8] -mt-15'>Add New Announcement</h2>
+                    <h2 className='text-3xl capitalize font-bold text-[#e8e8e8] -mt-15'>Edit Announcement</h2>
 
         <div className="mt-5 mx-auto w-full shadow-md p-5 rounded bg-[#e8e8e8]">
           <form onSubmit={handleSubmit} method="POST" className="space-y-6">
@@ -102,7 +114,7 @@ export default function CreateAnnouncement() {
                 type="submit"
                 className="flex  justify-center rounded-md bg-[#52658F] px-3 py-2 text-sm/6 font-semibold text-[#e8e8e8] hover:bg-[#333a56] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
-              Add New Announcement
+              Edit Announcement
               </button>
             </div>
           </form>

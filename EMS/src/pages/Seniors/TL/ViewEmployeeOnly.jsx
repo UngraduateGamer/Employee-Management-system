@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../../components/Admin/Sidebar'
-import Navbar from '../../components/Admin/Navbar'
+import Sidebar from '../../../components/Seniors/SideBar'
+import Navbar from '../../../components/Seniors/Navbar'
 import { useNavigate } from 'react-router'
-import { approveUser, deleteUser, getUsers } from '../../utils/localStorage'
+import { approveUser,deleteUser,getEmployees } from '../../../utils/localStorage'
 import { toast } from 'react-toastify'
 
-const ViewEmployee = () => {
+const ViewEmployeeOnly = () => {
     const navigate = useNavigate()
     const [empData,setEmpData] = useState([]);
     const [show,setShow] = useState(false);
     const [selectedEmp,setSelectedEmp] = useState('');
     useEffect(()=>{
-      const user = getUsers();
+      const user = getEmployees();
       setEmpData(user)
     },[])
-
-    function ApprovedUser(id){
-      const res = approveUser(id)
-      console.log(res)
-      setEmpData(prev => prev.map(emp => emp.id === id ? { ...emp, approved: true } : emp));
-    }
+ 
+    
   return (
         <div className="bg-[#f7f5e6] w-full h-screen grid grid-cols-[20%_80%]">
             <Sidebar/>
@@ -39,8 +35,8 @@ const ViewEmployee = () => {
                 <h4 className='text-left w-1/6'>Department</h4>
                 <h4 className='text-left w-1/6'>Experience</h4>
                 <h4 className='text-left w-1/6'>salary</h4>
-                <h4 className='text-left w-1/6'>status</h4>
-                <h4 className='text-left w-1/6'>action</h4>
+                {/* <h4 className='text-left w-1/6'>status</h4>
+                <h4 className='text-left w-1/6'>action</h4> */}
             </div>
 
            {
@@ -50,9 +46,9 @@ const ViewEmployee = () => {
                <div key={idx} className='capitalize  my-3 px-8 py-3 text-[#e8e8e8] flex justify-between text-left border-b rounded-none '>
                 <h4 className='text-left w-1/6'>{elem?.firstName+ " "+ elem?.lastName}</h4>
                 <h4 className='text-left w-1/6'>{elem?.department}</h4>
-                <h4 className='text-left w-1/6 overflow-hidden '>{elem?.experience}</h4>
+                <h4 className='text-left w-1/6 overflow-hidden '>{elem?.experience} Years</h4>
                 <h4 className='text-left w-1/6 overflow-hidden '>&#8377;{Number(elem?.salary).toLocaleString()}</h4>
-                <h4 className='text-left w-1/6 capsule flex items-center'>
+                {/* <h4 className='text-left w-1/6 capsule flex items-center'>
                 <button className='bg-[#e8e8e8] rounded-full px-3 py-1 text-[#333a56] font-medium text-sm' onClick={()=>{ApprovedUser(elem?.id)}}>{elem?.approved ? "Approved" : "Pending"}</button></h4>
                 <h4 className='text-left w-1/6 overflow-hidden font-semibold'><span className='cursor-pointer  ' onClick={()=>{navigate(`/dashboard/admin/employees/edit/${elem.id}`)}}>Edit</span> <span className='text-[#] ml-2 cursor-pointer'  onClick={()=>{setShow(true);
                   setSelectedEmp(elem?.id)
@@ -89,7 +85,7 @@ const ViewEmployee = () => {
                       </div>
                     </div>
                   </div>
-                </h4>
+                </h4> */}
             </div>
             ))
           }
@@ -103,4 +99,4 @@ const ViewEmployee = () => {
   )
 }
 
-export default ViewEmployee
+export default ViewEmployeeOnly

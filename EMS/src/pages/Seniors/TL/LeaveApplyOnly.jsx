@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../../components/Employee/Sidebar'
-import Navbar from '../../components/Employee/Navbar'
+import Sidebar from '../../../components/Seniors/SideBar';
+import Navbar from '../../../components/Seniors/Navbar';
 import { useNavigate } from 'react-router';
-import { applyLeave, getLeaves, getLoggedInUser } from '../../utils/localStorage';
-
-const LeaveApply = () => {
+import { applyLeave,getLeaves,getLoggedInUser } from '../../../utils/localStorage';
+const LeaveApplyOnly = () => {
   const [startDate,setStartDate] = useState('');
   const [endDate,setEndDate] = useState('');
   const [reason,setReason] = useState('');
@@ -35,7 +34,7 @@ const LeaveApply = () => {
     setEndDate('');
     setStartDate('');
     setReason('');
-    navigate("/dashboard/employee")
+    navigate("/dashboard/seniors")
   }
 
 
@@ -82,4 +81,4 @@ const LeaveApply = () => {
   )
 }
 
-export default LeaveApply
+export default LeaveApplyOnly

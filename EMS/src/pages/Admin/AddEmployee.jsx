@@ -7,8 +7,9 @@ import CreateEmployee from '../../components/Admin/CreateEmployee'
 
 const AddEmployee = () => {
   return (
-    <div className='grid grid-cols-[20%_80%] bg-red-800 w-full max-h-screen overflow-hidden '>
-      <Sidebar  />
+    <div className='grid grid-cols-[20%_80%]  w-full max-h-screen  '>
+
+      <Sidebar   />
        <div className="bg-[#333a56] w-full h-screen ">
       <Navbar />
       <CreateEmployee/>

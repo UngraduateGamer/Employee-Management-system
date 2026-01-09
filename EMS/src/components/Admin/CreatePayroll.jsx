@@ -4,9 +4,10 @@ import { NavLink, useNavigate } from "react-router";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { getEmployees, getUsers } from "../../utils/localStorage";
+import { addPayment, getEmployees, getUsers } from "../../utils/localStorage";
 
 export default function CreatePayroll() {
+  
     const navigate = useNavigate()
     const [passwordVisible,setPasswordVisible] = useState(false);
     const [confirmPasswordVisible,setConfirmPasswordVisible] = useState(false);
@@ -17,7 +18,7 @@ export default function CreatePayroll() {
     const [startDate,setStartDate]  = useState('');
     const [endDate,setEndDate] = useState('');
     const [users,setUsers] = useState([]);
-    
+    const [employeeId,setEmployeeId] = useState('');
     function togglePassword(event){
         setPasswordVisible(!passwordVisible);
     }
@@ -36,17 +37,14 @@ useEffect(()=>{
       e.preventDefault();
 
       // create payroll
-      const data = {
-        name:employee,
-        
-       
-      }
-      CreatePayroll(data);
+      const data = {startDate,endDate,salary,status:"pending",empId: employee  }
+     addPayment(data)
+
       // reset all data to the form
-      // setStartDate('');
-      // setEndDate('');
-      // setEmployee('');
-      // setSalary('');
+      setStartDate('');
+      setEndDate('');
+      setEmployee('');
+      setSalary('');
     }
   return (
     <>
@@ -63,7 +61,7 @@ useEffect(()=>{
                     <h2 className='text-3xl capitalize font-bold text-[#e8e8e8] -mt-15'>Create Payroll</h2>
 
         <div className="mt-5 mx-auto w-full shadow-md p-5 rounded bg-[#e8e8e8]">
-          <form action="#" onSubmit={submitHandler} className="space-y-6">
+          <form onSubmit={submitHandler} className="space-y-6">
 
             <div className="flex justify-between gap-5">
             <div className="w-1/2">
@@ -85,8 +83,7 @@ useEffect(()=>{
                 {
                   users?.length > 0 ? 
                   users?.map((elem,idx)=>(
-                   
-                    <option className="bg-[#f7f5e6] " value={elem?.username}>{elem?.username}</option>
+                    <option className="bg-[#f7f5e6] " value={elem?.id} >{elem?.username} </option>
                   
                   ))
                   : <option className="bg-[#f7f5e6] " value={""}>--No employee found--</option>

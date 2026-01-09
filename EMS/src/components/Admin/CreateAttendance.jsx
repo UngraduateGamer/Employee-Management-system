@@ -4,7 +4,8 @@ import { NavLink, useNavigate } from "react-router";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { addAttendance, getAttendanceByEmp, getUserByEmp, getUsers } from "../../utils/localStorage";
+import { addAttendance, getAttendance, getAttendanceByEmp, getUserByEmp, getUsers } from "../../utils/localStorage";
+import { toast } from "react-toastify";
 
 export default function CreateAttendance() {
     const navigate = useNavigate()
@@ -50,28 +51,23 @@ export default function CreateAttendance() {
       setUsers(approvedUser);
     },[])
 
-// check ki user ne pehle attendance set kiya hai ya nai
-const isAttendanceExists = (empId, date) => {
-  const attendance = getData("ems_attendance");
-
-  return attendance.some(
-    a => a.empId === empId && a.date === date
-  );
-};
-
-useEffect(()=>{
-
-},[])
-
-
+    
     // submit handler
-    function submitHandler(e){
-      // check user attendance exists or not
-      // isAttendanceExists()
+     async function submitHandler(e){
       e.preventDefault();
       let user = getUserByEmp(employee);
       console.log(user)
-      addAttendance({empId:employee,empName:user[0]?.firstName + " "+ user[0]?.lastName,date: new Date(dates).toLocaleDateString(),checkIn:formatTimeWithSecondsAndAmPm(checkIn),checkOut:formatTimeWithSecondsAndAmPm(checkOut),status:"present"})
+      // check user attendance exists or not
+      console.log()   
+      const existingDates = await getAttendanceByEmp(user[0].id).some(elem => elem.date == new Date(dates).toLocaleDateString());
+      if(!existingDates){
+        addAttendance({empId:employee,empName:user[0]?.firstName + " "+ user[0]?.lastName,date: new Date(dates).toLocaleDateString(),checkIn:formatTimeWithSecondsAndAmPm(checkIn),checkOut:formatTimeWithSecondsAndAmPm(checkOut),status:"present",empRole:user[0].role})
+        toast.success("Attendance Saved...")
+        navigate("/dashboard/admin/attendance/manage");
+      }
+      else{
+        toast.error("Attendance records already saved")
+      }
     }
       return (
 

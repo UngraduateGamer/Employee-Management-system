@@ -43,7 +43,7 @@ const Sidebar = () => {
         <p className='text-[#52658F] font-semibold  px-5'>Main</p>
         <div>
 
-        <NavLink to="/" className={'flex items-center gap-3   text-[#333a56] hover:bg-[#52658F] hover:text-[#e8e8e8] font-semibold  py-3 px-5 hover:border-r-4 border-[#333a56]' }>
+        <NavLink to="/dashboard/employee" className={'flex items-center gap-3   text-[#333a56] hover:bg-[#52658F] hover:text-[#e8e8e8] font-semibold  py-3 px-5 hover:border-r-4 border-[#333a56]' }>
         <MdSpaceDashboard className='text-xl'/> Dashboard
         </NavLink>
 

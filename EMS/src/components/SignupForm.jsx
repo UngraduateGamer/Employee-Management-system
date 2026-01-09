@@ -7,7 +7,7 @@ import { FaEye } from "react-icons/fa";
 import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { addUser, getDepartments } from "../utils/localStorage";
+import { addUser, getApprovedUser, getDepartments } from "../utils/localStorage";
 
 export default function SignUpForm() {
     const navigate = useNavigate()
@@ -28,15 +28,26 @@ export default function SignUpForm() {
     const [confirmPassword,setConfirmPassword]= useState('');
     const [role,setRole] = useState('employee');
     const [allDepartments,setAllDepartments] = useState([]);
+    const [ApprovedUsers,setApprovedUsers] = useState([]);
 // fetch all departments data
 useEffect(()=>{
   const data = getDepartments();
   setAllDepartments(data);
 },[])
+useEffect(()=>{
+  setApprovedUsers(getApprovedUser);
+
+},[])
 
     function submitHandler(event){
       event.preventDefault();
-      if(password === confirmPassword){
+      if(email === 'admin@admin.com'){
+        toast.error("Wrong email ! this email is not a valid email")
+      }
+      else if(password === confirmPassword){
+        if(ApprovedUsers.some(elem=>elem.email == email)){
+          toast.error("Email Already Exists ! please try again another gmail");}
+          else{
       const user = {
         username,
         firstName,
@@ -54,17 +65,18 @@ useEffect(()=>{
       toast.success("Signup complete! Wait for admin approval (approx. 10hour)");
       navigate("/")
     }
-      setUsername('');
-      setFirstName('');
-      setLastName('');
-      setDepartment('');
-      setSalary('');
-      setBirthday('');
-      setExperience('');
-      setEmail('')
-      setPassword('');
-      setConfirmPassword('');
-      setRole('');
+    }
+      // setUsername('');
+      // setFirstName('');
+      // setLastName('');
+      // setDepartment('');
+      // setSalary('');
+      // setBirthday('');
+      // setExperience('');
+      // setEmail('')
+      // setPassword('');
+      // setConfirmPassword('');
+      // setRole('');
     }
 
     function togglePassword(event){
@@ -119,7 +131,7 @@ useEffect(()=>{
                   name="username"
                   type="text"
                   value={username}
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block w-full rounded-md  px-3   bg-[#f7f5e6]   py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setUsername(event.target.value)}}
@@ -136,7 +148,7 @@ useEffect(()=>{
                   name="email"
                   type="email"
                   value={email}
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setEmail(event.target.value)}}
@@ -155,7 +167,7 @@ useEffect(()=>{
                   id="firstName"
                   name="firstName"
                   type="text"
-                  required
+                  // required
                   value={firstName}
                 //   autoComplete="email"
                   className="block w-full rounded-md    bg-[#f7f5e6]   px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
@@ -172,7 +184,7 @@ useEffect(()=>{
                   id="lastName"
                   name="lastName"
                   type="text"
-                  required
+                  // required
                   value={lastName}
                 //   autoComplete="email"
                   className="block w-full    bg-[#f7f5e6]  rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
@@ -191,7 +203,7 @@ useEffect(()=>{
                 <select
                   id="department"
                   name="department"
-                  required
+                  // required
                   value={department}
 
                   onChange={(event)=>setDepartment(event.target.value)}
@@ -216,7 +228,7 @@ useEffect(()=>{
                   id="salary"
                   name="salary"
                   type="number"
-                  required
+                  // required
                   value={salary}
                   //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
@@ -237,7 +249,7 @@ useEffect(()=>{
                   name="birthday"
                   value={birthday}
                   type="date"
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block    bg-[#f7f5e6]  w-full rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setBirthday(event.target.value)}}
@@ -254,7 +266,7 @@ useEffect(()=>{
                   name="experience"
                   type="number"
                   value={experience}
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block   bg-[#f7f5e6]   w-full rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setExperience(event.target.value)}}
@@ -274,7 +286,7 @@ useEffect(()=>{
                   name="password"
                   value={password}
                   type={`${passwordVisible ? "text" : "password"}`}
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block w-full    bg-[#f7f5e6]  rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setPassword(event.target.value)}}
@@ -292,7 +304,7 @@ useEffect(()=>{
                   name="confirmPassword"
                   value={confirmPassword}
                   type={`${confirmPasswordVisible? "text" :"password"}`}
-                  required
+                  // required
                 //   autoComplete="email"
                   className="block w-full   bg-[#f7f5e6]   rounded-md  px-3 py-1.5 text-base border-[#333a56] border  outline-none sm:text-sm/6 text-[#333a56] focus:ring ring-[#333a56]"
                   onChange={(event)=>{setConfirmPassword(event.target.value)}}

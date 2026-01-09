@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../../components/Employee/Sidebar'
-import Navbar from '../../components/Employee/Navbar'
+import Sidebar from '../../../components/Seniors/SideBar';
+import Navbar from '../../../components/Seniors/Navbar';
 import { toast } from 'react-toastify';
-import { addAttendance, getAttendanceByEmp, getData, getLoggedInUser } from '../../utils/localStorage';
+import { addAttendance, getAttendanceByEmp, getData, getLoggedInUser } from "../../../utils/localStorage";
 
-const Attendance = () => {
+const AttendanceOnly = () => {
     const [clockIn,setClockIn] = useState(null);
     const [clockOut,setClockOut] = useState(null);
     const [countIn,setCountIn] = useState(0)
@@ -68,7 +68,7 @@ const Attendance = () => {
     status: "present",
     checkIn: clockIn,
     checkOut: time,
-    empRole:loginUser?.role
+    empRole:loginUser.role
   };
 
   addAttendance(record);
@@ -138,4 +138,4 @@ const Attendance = () => {
     )
 }
 
-export default Attendance
+export default AttendanceOnly

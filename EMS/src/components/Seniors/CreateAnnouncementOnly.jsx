@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { addAnnouncement } from "../../utils/localStorage";
 import { toast } from "react-toastify";
 
-export default function CreateAnnouncement() {
+export default function CreateAnnouncementOnly() {
   const [user,setUser] = useState({});
   useEffect(()=>{
     setUser(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -15,7 +15,7 @@ export default function CreateAnnouncement() {
 
   function handleSubmit(event){
     event.preventDefault();
-    const announcementData = {title,content,role:"admin"};
+    const announcementData = {title,content,role:user?.role};
       addAnnouncement(announcementData);
       setTitle('');
       setContent('');

@@ -24,11 +24,18 @@ export const addUser = (user) => {
   setData(USERS_KEY, users);
 };
 
+// create Employee -- auto approved(by admin)
+export const createEmployee = (user) => {
+  const users = getData(USERS_KEY);
+  users.push({ ...user, id: Date.now(), approved: true });
+  setData(USERS_KEY, users);
+};
+
 // get all users (admin)
 export const getUsers = () => getData(USERS_KEY);
 
-export const getUserByEmp = (id) => {
-  const data = getData(USERS_KEY).filter(elem=>elem.id == id);
+export const getUserByEmp = (emp_id) => {
+  const data = getData(USERS_KEY).find(elem=> elem.id == emp_id);
   return data;
 }
 
@@ -40,6 +47,12 @@ export const approveUser = (id) => {
   setData(USERS_KEY, users);
     getData();
 };
+
+// fetch approved user only
+export const getApprovedUser = ()=>{
+  const users = getUsers().filter(elem=>elem.approved);
+  return users;
+}
 
 export const getPendingUser = () => {
   const users = getData(USERS_KEY).filter(user => user.approved == false);
@@ -77,15 +90,34 @@ export const loginUser = (email, password) => {
   );
 };
 
+// updatae user
+export const updateUser = (id,updated) =>{
+  const update = getUsers().map(user => user.id == id ? {...user,...updated} : user );
+  setData(USERS_KEY,update)
+}
+
+// delete user
+export const deleteUser  = (id) =>{
+  const users = getUsers().filter(elem=>elem.id != id);// users array me vo element honge jo delete na huye ho
+  setData(USERS_KEY,users);
+}
+
 /* ========= EMPLOYEES ========= */
 export const addEmployee = (emp) => {
   const employees = getData(EMPLOYEES_KEY);
   employees.push({ ...emp, id: Date.now() });
   setData(EMPLOYEES_KEY, employees);
 };
+// fetch only employees not tl or seniors
+export const getEmployees = () => {
+  const Employees =getApprovedUser().filter(elem => elem.role == 'employee');
+  setData(EMPLOYEES_KEY,Employees);
+  return Employees;
+};
 
-export const getEmployees = () => getData(EMPLOYEES_KEY);
-
+export const getLeavesAllEmp = () => {
+  const data = getLeaves();
+}
 export const updateEmployee = (id, updated) => {
   const employees = getData(EMPLOYEES_KEY).map(e =>
     e.id === id ? { ...e, ...updated } : e
@@ -106,7 +138,7 @@ export const addAttendance = (record) => {
 };
 
 export const getAttendanceByEmp = (empId) =>
-  getData(ATTENDANCE_KEY).filter(a => a.empId === empId);
+  getData(ATTENDANCE_KEY).filter(a => a.empId == empId);
 
 export const getAttendance = () => getData(ATTENDANCE_KEY);
 /* ========= PAYMENTS ========= */
@@ -116,8 +148,18 @@ export const addPayment = (payment) => {
   setData(PAYMENTS_KEY, data);
 };
 
+export const getPayments = () => {
+  const data = getData(PAYMENTS_KEY);
+  return data;
+}
 export const getPaymentsByEmp = (empId) =>
-  getData(PAYMENTS_KEY).filter(p => p.empId === empId);
+  getData(PAYMENTS_KEY).filter(p => p.empId == empId);
+
+export const updateStatusByPayment = (paymentId) => {
+  const data = getPayments().map(p => p.id == paymentId ? {...p,status:"paid"} : p)
+  setData(PAYMENTS_KEY,data) 
+}
+
 
 /* ========= ANNOUNCEMENTS ========= */
 export const addAnnouncement = (ann) => {
@@ -197,3 +239,8 @@ export const deleteDepartment = (id) => {
 // loggin users
 export const setLoggedInUser = (data) => setData("loggedInUser",data)
 export const getLoggedInUser = () => getData("loggedInUser")
+export const clearLoggedInUser = () => setData("loggedInUser",{});
+export const checkTlOrSeniors = () => {
+  const role = getLoggedInUser().role;
+  console.log(role)
+}

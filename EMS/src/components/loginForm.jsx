@@ -36,7 +36,12 @@ export default function LoginForm() {
       else if(userData){
         toast.success("Loggin Successfully")
         setLoggedInUser(userData);
-        navigate(`/dashboard/${userData?.role}`)
+        if(userData.role == 'employee'){
+          navigate(`/dashboard/${userData?.role}`)
+        }
+        else{
+          navigate(`/dashboard/seniors`)
+        }
       }
       else{
         toast.error("Email or password does not match.")

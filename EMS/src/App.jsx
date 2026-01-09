@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Routes } from 'react-router'
-import SeniorDashboard from './pages/SeniorDashboard'
 import HomePage from './pages/HomePage'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -28,6 +27,21 @@ import ManageAnnouncements from './pages/Admin/ManageAnnouncements.jsx'
 import AddAnnouncement from './pages/Admin/AddAnnouncement.jsx'
 import EditAnnouncements from './pages/Admin/EditAnnouncements.jsx'
 import AddDepartment from './pages/Admin/AddDepartment.jsx'
+import SeniorDashboard from './pages/Seniors/TL/SeniorDashboard.jsx'
+import ViewEmployeeOnly from './pages/Seniors/TL/ViewEmployeeOnly.jsx'
+import AddEmployeeOnly from './components/Seniors/AddEmployeeOnly.jsx'
+import ViewDepartmentOnly from './pages/Seniors/TL/ViewDepartmentsOnly.jsx'
+import CreateDepartmentOnly from './pages/Seniors/TL/CreateDepartmentOnly.jsx'
+import ManageLeavesOnly from './pages/Seniors/TL/ManagesLeavesOnly.jsx'
+import LeaveHistoryOnly from './pages/Seniors/TL/LeaveHistoryOnly.jsx'
+import LeaveApplyOnly from './pages/Seniors/TL/LeaveApplyOnly.jsx'
+import ManageAttendanceOnly from './pages/Seniors/TL/ManageAttendanceOnly.jsx'
+import AttendanceOnly from './pages/Seniors/TL/AttendanceOnly.jsx'
+import CreateAnnouncement from './components/Admin/CreateAnnouncement.jsx'
+import AnnouncementsOnly from './pages/Seniors/TL/AnnouncementsOnly.jsx'
+import AddAnnouncementOnly from './pages/Seniors/TL/AddAnnouncementsOnly.jsx'
+import EditAnnouncementOnly from './components/Seniors/EditAnnouncementsOnly.jsx'
+import ManageAnnouncementsOnly from './pages/Seniors/TL/ManageAnnouncementsOnly.jsx'
 
 const App = () => {
   return (
@@ -58,10 +72,23 @@ const App = () => {
       <Route path="/dashboard/admin/announcements" element ={<ManageAnnouncements/>} />
       <Route path="/dashboard/admin/announcements/add" element ={<AddAnnouncement/>} />
 
+      <Route path="/dashboard/seniors/employee" element={<ViewEmployeeOnly/>}/>
+      <Route path="/dashboard/seniors/employees/add" element={<AddEmployeeOnly/>}/>
+      <Route path="/dashboard/seniors/department" element={<ViewDepartmentOnly/>}/>
+      <Route path="/dashboard/seniors/department/create" element={<CreateDepartmentOnly/>}/>
+      <Route path="/dashboard/seniors/leave" element={<ManageLeavesOnly/>}/>
+      <Route path="/dashboard/seniors/leave/history" element={<LeaveHistoryOnly/>}/>
+      <Route path="/dashboard/seniors/leave/apply" element={<LeaveApplyOnly/>}/>
+      <Route path="/dashboard/seniors/attendance/manage" element={<ManageAttendanceOnly/>}/>
+      <Route path="/dashboard/seniors/attendance/add" element={<AttendanceOnly/>}/>
+      <Route path="/dashboard/seniors/announcements" element={<AnnouncementsOnly/>}/>
+      <Route path="/dashboard/seniors/announcements/add" element={<AddAnnouncementOnly/>}/>
+      <Route path="/dashboard/seniors/announcements/manage" element={<ManageAnnouncementsOnly/>}/>
+
       <Route path="/dashboard">
       <Route path="employee" element={<Dashboard/>} />
       <Route path="admin" element={<AdminDashboard/>} />
-      <Route path="senior" element={<SeniorDashboard/>} />
+      <Route path="seniors" element={<SeniorDashboard/>} />
       </Route>
     </Routes>
   </div>

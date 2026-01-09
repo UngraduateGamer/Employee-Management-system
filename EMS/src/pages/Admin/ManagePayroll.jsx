@@ -1,10 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/Admin/Sidebar'
 import Navbar from '../../components/Admin/Navbar'
 import { useNavigate } from 'react-router'
+import { getPayments, getUserByEmp, getUsers, updateStatusByPayment } from '../../utils/localStorage'
+import { toast } from 'react-toastify';
 
 const ManagePayroll = () => {
     const navigate = useNavigate()
+    const [status,setStatus] = useState('pending')
+    // fetch all payrolls data
+    const [payroll,setPayroll] = useState([]);
+    useEffect(()=>{
+      const payrollData = getPayments()
+      setPayroll(payrollData);
+    },[])
+    
+    function processPayment(id){
+      updateStatusByPayment(id);
+      // state ko bhi change karo taki immidiately ui change ho
+      setPayroll(prev=>prev.map(elem => elem.id == id ? {...elem,status:"paid"} : elem));
+      toast.success("Payment processed");
+    }
+    // fetch user Data according to payroll
+    // useEffect(()=>{
+      
+    // },[payroll])
+
   return (
         <div className="bg-[#f7f5e6] w-full h-screen grid grid-cols-[20%_80%]">
             <Sidebar/>
@@ -28,16 +49,20 @@ const ManagePayroll = () => {
                 
             </div>
 
-            <div className='capitalize  my-3 px-8 py-3 text-[#e8e8e8] flex justify-between text-left border-b rounded-none '>
-                <h4 className='text-left w-2/11'>sumit kumar</h4>
-                <h4 className='text-left w-2/11'>&#8377;12,000.00</h4>
-                <h4 className='text-left w-2/7'>july 1, 2025 to july 31, 2025</h4>
+         {
+          payroll?.length < 1 ? <p className='text-center mt-5 text-[#e8e8e8]'>No payrolls found.</p> : payroll?.map((elem,idx)=>(
+               <div key={idx} className='capitalize  my-3 px-8 py-3 text-[#e8e8e8] flex justify-between text-left border-b rounded-none '>
+                <h4 className='text-left w-2/11'>{getUserByEmp(elem?.empId).username}</h4>
+                <h4 className='text-left w-2/11'>&#8377;{Number(elem?.salary).toLocaleString()}</h4>
+                <h4 className='text-left w-2/7 lowercase'>{new Date(elem?.startDate).toLocaleDateString()} to {new Date(elem?.endDate).toLocaleDateString()}</h4>
                 <h4 className='text-left w-2/11 capsule flex items-center'>
-                <button className='bg-[#e8e8e8] rounded-full px-3 py-1 text-[#333a56] font-medium text-sm'>Paid</button></h4>
-                <h4 className='w-2/11 font-semibold'>Process Payment</h4>
+                <button className='bg-[#e8e8e8] rounded-full px-3 py-1 text-[#333a56] font-medium text-sm'>{elem?.status}</button></h4>
+                <h4 className='w-2/11 font-semibold' >{elem?.status == 'paid' ? <h2></h2> : <h2 onClick={()=>{processPayment(elem?.id)}}>Process Payment</h2>}</h4>
             </div>
+          ))
+         }
            
-            <p className='text-center mt-5 text-[#e8e8e8]'>No leave requests found.</p>
+            
         </div>
       
       </main>

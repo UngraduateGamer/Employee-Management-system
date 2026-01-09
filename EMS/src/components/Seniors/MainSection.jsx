@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
+import Navbar from './Navbar';
 import { CiCalendarDate } from "react-icons/ci";
 import { FaCalendar } from "react-icons/fa";
 import { HiMiniBuildingStorefront } from "react-icons/hi2";
@@ -13,14 +13,14 @@ import { FaBullhorn } from "react-icons/fa6";
 import { FaUserCheck } from "react-icons/fa";
 import { FcDepartment } from 'react-icons/fc';
 import { BiRupee } from 'react-icons/bi';
-import { approveUser, getAnnouncements, getDepartments, getEmployees, getLeaves, getOnLeaveToday, getOnPresentToday, getPayments, getPendingUser, getUsers } from '../../utils/localStorage';
+import { approveUser, getAnnouncements, getAttendance, getDepartments, getEmployees, getLeaves, getOnLeaveToday, getOnPresentToday, getPayments, getPendingUser, getUsers } from '../../utils/localStorage';
 
 const MainSection = () => {
   const [data,setData] = useState({});
   const [announcement,setAnnouncement] = useState([]);
   const [attendance,setAttendance] = useState([]);
   const [pendingApproval,setPendingApproval] = useState([]);
-  const [registeredUser,setRegisteredUser] = useState([]);
+  const [employees,setEmployees] = useState([]);
   const [onLeaveToday,setOnLeaveToday] = useState([]);
   const [onPresentToday,setOnPresentToday] = useState([]);
   const [leaveApproved,setLeaveApproved] = useState([]);
@@ -36,8 +36,8 @@ const MainSection = () => {
 
   // fetch all registered user data jo approved ho 
   useEffect(()=>{
-    let data = getUsers().filter(user => user.approved);
-    setRegisteredUser(data)
+    let data = getEmployees();
+    setEmployees(data)
     },[])
     
 
@@ -56,7 +56,7 @@ const MainSection = () => {
 
   // fetch all registered user data jo aj present ho
    useEffect(()=>{
-    const data = getOnPresentToday();
+    const data = getAttendance().filter(att => att.empRole == 'employee');
     setOnPresentToday(data);
   },[])
 
@@ -84,7 +84,8 @@ const MainSection = () => {
   },[])
   return (
     <div className="bg-[#f7f5e6] w-full h-screen ">
-      <Navbar />
+        
+      <Navbar/>
       <main className='px-10 py-5'>
         <div className="top flex justify-between items-center">
           <div className="left flex flex-col gap-0 ">
@@ -105,10 +106,10 @@ const MainSection = () => {
             </div>
             <div>
             <p className='text-[#e8e8e8] leading-5.8 w-[100%]'>Total Employees</p>
-            <h4 className='text-[#e8e8e8] text-2xl font-bold'>{registeredUser?.length}</h4>
+            <h4 className='text-[#e8e8e8] text-2xl font-bold'>{employees?.length}</h4>
             </div>
           </div>
-          <div className='r1ounded-full h-fit w-fit bg-[#52658f] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/employee")}}> View List</div>
+          <div className='rounded-full h-fit w-fit bg-[#52658f] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/seniors/employee")}}> View List</div>
           </div>
 
           <div className="card p-5 h-35 w-68 rounded-md justify-center flex flex-col gap-2  bg-[#52658f]">
@@ -121,7 +122,7 @@ const MainSection = () => {
             <h4 className='text-[#e8e8e8] text-2xl font-bold'>{onLeaveToday.length}</h4>
             </div>
           </div>
-          <div className='rounded-full h-fit w-fit bg-[#333a56] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/leave")}}> View List</div>
+          <div className='rounded-full h-fit w-fit bg-[#333a56] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/seniors/leave")}}> View List</div>
           </div>
 
           <div className="card p-5 h-35 w-68 rounded-md justify-center flex flex-col gap-2  bg-[#333a56]">
@@ -134,21 +135,10 @@ const MainSection = () => {
             <h4 className='text-[#e8e8e8] text-2xl font-bold'>{department?.length}</h4>
             </div>
           </div>
-          <div className='rounded-full h-fit w-fit bg-[#52658f] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/department")}}> View List</div>
+          <div className='rounded-full h-fit w-fit bg-[#52658f] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/seniors/department")}}> View List</div>
           </div>
 
-          <div className="card p-5 h-35 w-68 rounded-md justify-center flex flex-col gap-2  bg-[#52658f]">
-            <div className='flex gap-4'>
-            <div className="icon rounded-md overflow-hidden h-10 w-10 bg-[#333a56] flex items-center justify-center">
-              <FaUserCheck className='text-2xl text-[#e8e8e8]'/>
-            </div>
-            <div>
-            <p className='text-[#e8e8e8] leading-5.8 w-[100%]'>Pending Approvals</p>
-            <h4 className='text-[#e8e8e8] text-2xl font-bold'>{pendingApproval.length}</h4>
-            </div>
-          </div>
-          <div className='rounded-full h-fit w-fit bg-[#333a56] text-[#e8e8e8] text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/employee")}}> View List</div>
-          </div>
+          
 
 
 
@@ -166,7 +156,7 @@ const MainSection = () => {
           </div>
           <div className='flex justify-end'>
 
-          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/attendance/manage")}}> View List</div>
+          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/seniors/attendance/manage")}}> View List</div>
           </div>
           </div>
 
@@ -183,7 +173,7 @@ const MainSection = () => {
           </div>
           <div className='flex justify-end'>
 
-          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1' onClick={()=>{navigate("/dashboard/admin/announcements")}} > View List</div>
+          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1' onClick={()=>{navigate("/dashboard/seniors/announcements")}} > View List</div>
           </div>
           </div>
 
@@ -200,26 +190,10 @@ const MainSection = () => {
           </div>
           <div className='flex justify-end'>
 
-          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/leave")}}> View List</div>
+          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/seniors/leave")}}> View List</div>
           </div>
           </div>
 
- <div className="card p-5 h-35 w-68 rounded-md justify-center flex flex-col gap-2  bg-[#333a56]">
-            <div className='flex gap-4 w-full  justify-between'>
-            
-            <div>
-            <p className='text-[#e8e8e8] leading-5.8 w-[100%]'>Pending Payrolls</p>
-            <h4 className='text-[#e8e8e8] text-2xl font-bold'>{payrolls.length}</h4>
-            </div>
-            <div className="icon rounded-md overflow-hidden h-10 w-10 bg-[#52658f] flex items-center justify-center">
-              <BiRupee className='text-2xl text-[#e8e8e8]'/>
-            </div>
-          </div>
-          <div className='flex justify-end'>
-
-          <div className='rounded-full h-fit w-fit text-[#e8e8e8] underline cursor-pointer text-sm px-2 py-1 ' onClick={()=>{navigate("/dashboard/admin/payroll")}}> View List</div>
-          </div>
-          </div>
 
         
         </div>

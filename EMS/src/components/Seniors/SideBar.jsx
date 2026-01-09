@@ -42,7 +42,7 @@ const Sidebar = () => {
   const [isEmployeesVisible,setIsEmployeesVisible] = useState(false);
   const [isDepartmentVisible,setIsDepartmentVisible] = useState(false)
   return (
-    <div className="w-full min-h-screen   left-0 top-0  py-5  bg-[#e8e8e8] border-r-2 border-[#333a56]">
+    <div className="w-full min-h-screen left-0 top-0  py-5  bg-[#e8e8e8] border-r-2 border-[#333a56]">
       <div className="top  px-5 flex items-center gap-3 text-[#333a56] font-bold">
         <HiMiniBuildingStorefront className='text-2xl'/> <p className='leading-tight'>Employee <br /> Management <br />System</p>
       </div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
         <p className='text-[#52658F] font-semibold  px-5'>Main</p>
         <div>
 
-        <NavLink to="/dashboard/admin" className={'flex items-center gap-3   text-[#333a56] hover:bg-[#52658F] hover:text-[#e8e8e8] font-semibold  py-3 px-5 hover:border-r-4 border-[#333a56]' }>
+        <NavLink to="/dashboard/seniors" className={'flex items-center gap-3   text-[#333a56] hover:bg-[#52658F] hover:text-[#e8e8e8] font-semibold  py-3 px-5 hover:border-r-4 border-[#333a56]' }>
         <MdSpaceDashboard className='text-xl'/> Dashboard
         </NavLink>
 
@@ -63,9 +63,9 @@ const Sidebar = () => {
          {isEmployeesVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5 ' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5 ' />}
         </div>
         <div className={`${isEmployeesVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]'onClick={()=>navigate("/dashboard/admin/employee")}>View Employees</p>
+        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]'onClick={()=>navigate("/dashboard/seniors/employee")}>View Employees</p>
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-         onClick={()=>navigate("/dashboard/admin/employees/add")}
+         onClick={()=>navigate("/dashboard/seniors/employees/add")}
         >Add Employees</p>
         </div>
           </div>
@@ -79,9 +79,9 @@ const Sidebar = () => {
          {isDepartmentVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5 ' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5 ' />}
         </div>
         <div className={`${isDepartmentVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]'onClick={()=>navigate("/dashboard/admin/department")}>View Departments</p>
+        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]'onClick={()=>navigate("/dashboard/seniors/department")}>View Departments</p>
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-         onClick={()=>navigate("/dashboard/admin/department/create")}
+         onClick={()=>navigate("/dashboard/seniors/department/create")}
         >Add Department</p>
         </div>
           </div>
@@ -95,31 +95,16 @@ const Sidebar = () => {
          {isLeaveVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5 ' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5 ' />}
         </div>
         <div className={`${isLeaveVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]' onClick={()=>navigate("/dashboard/admin/leave")}>Manage leaves</p>
-        {/* <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-         onClick={()=>navigate("/dashboard/employee/leave/apply")}
-        >Apply for Leave</p> */}
+        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]' onClick={()=>navigate("/dashboard/seniors/leave")}>Manage leaves (emp)</p>
+        <p className=' px-13 py-2 cursor-pointer hover:bg-[#52658f] hover:text-[#e8e8e8]' onClick={()=>navigate("/dashboard/seniors/leave/history")}>Leave History</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+         onClick={()=>navigate("/dashboard/seniors/leave/apply")}
+        >Apply for Leave</p>
         </div>
           </div>
         </div>
 
-        <div to="" className={'flex  items-center gap-3    text-[#333a56]   font-semibold  ' }>
-          <div className='w-full'>
-        <div className='flex relative items-center gap-3 hover:border-r-4 py-3 px-5  border-[#333a56] w-full hover:bg-[#52658F] hover:text-[#e8e8e8] ' onClick={togglePayroll}>
-        <FaIndianRupeeSign className='text-xl '/> Payroll
-         {isPayrollVisible ? <MdOutlineKeyboardArrowDown className='text-xl absolute right-5' /> : <MdOutlineKeyboardArrowRight className='text-xl absolute right-5' />}
-        </div>
-        <div className={`${isPayrollVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-        onClick={()=>navigate("/dashboard/admin/payroll")}
-        >Manage Payroll</p>
-        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-        onClick={()=>navigate("/dashboard/admin/payroll/create")}
-        >Create Payroll</p>
-        
-        </div>
-          </div>
-        </div>
+     
         
         <div to="" className={'flex items-center gap-3    text-[#333a56]   font-semibold  ' }>
           <div className='w-full'>
@@ -130,12 +115,12 @@ const Sidebar = () => {
         <div className={`${isAttendanceVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
         
-        onClick={()=>navigate("/dashboard/admin/attendance/manage")}
+        onClick={()=>navigate("/dashboard/seniors/attendance/manage")}
         
         >Manage Attendance</p>
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
         
-        onClick={()=>navigate("/dashboard/admin/attendance/add")}
+        onClick={()=>navigate("/dashboard/seniors/attendance/add")}
         
         >Add Attendance</p>
         
@@ -151,12 +136,16 @@ const Sidebar = () => {
         </div>
         <div className={`${isAnnouncementVisible ? "flex" : "hidden"} 'flex flex-col gap-0 hidden'`}>
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-        onClick={()=>navigate("/dashboard/admin/announcements")}
+        onClick={()=>navigate("/dashboard/seniors/announcements")}
         
         >View Announcements</p>
+        <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
+        onClick={()=>navigate("/dashboard/seniors/announcements/manage")}
+        
+        >Manage Announcements</p>
         
         <p className=' px-13 py-2  hover:bg-[#52658f] hover:text-[#e8e8e8]'
-        onClick={()=>navigate("/dashboard/admin/announcements/add")}
+        onClick={()=>navigate("/dashboard/seniors/announcements/add")}
         
         >Add Announcements</p>
         

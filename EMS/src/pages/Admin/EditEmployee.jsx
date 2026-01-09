@@ -12,7 +12,7 @@ const EditEmployee = () => {
        <div className="bg-[#333a56] w-full h-screen ">
       <Navbar />
       <UpdateEmployee/>
-    </div>
+    </div>  
     </div>
   )
 }
